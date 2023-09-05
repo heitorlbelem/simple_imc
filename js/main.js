@@ -6,16 +6,15 @@ const weightInput = document.querySelector("#weight")
 const heightInput = document.querySelector("#height")
 const form = document.querySelector("form")
 
-// Event listeners
 form.onsubmit = (event) => {
   event.preventDefault()
 
   const weight = weightInput.value
   const height = heightInput.value
-  const showErrorAlert =
+  const weightOrHeightIsNotANumber =
     textInputIsNotANumber(weight) || textInputIsNotANumber(height)
 
-  if (showErrorAlert) {
+  if (weightOrHeightIsNotANumber) {
     AlertError.open()
     return
   }
@@ -23,6 +22,15 @@ form.onsubmit = (event) => {
   AlertError.close()
 
   const result = calculateIMC(Number(weight), Number(height))
-  Modal.message.innerText = `Seu IMC é de ${result}`
+  displayResultMessage(result)
+}
+
+heightInput.oninput = () => AlertError.close()
+weightInput.oninput = () => AlertError.close()
+
+function displayResultMessage(result) {
+  const message = `Seu IMC é de ${result}`
+
+  Modal.message.innerText = message
   Modal.open()
 }
